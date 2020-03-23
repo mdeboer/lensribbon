@@ -10,6 +10,7 @@ require('../less/styles.less');
     const lenses = document.getElementById('lenses');
     const triggerRow = document.getElementById('trigger-row');
     const ribbon = document.getElementById('ribbon');
+    const ribbonContainer = document.getElementById('ribbon-container');
     const form = document.getElementById('ribbonForm');
 
     let pixelBg;
@@ -91,6 +92,9 @@ require('../less/styles.less');
 
         // Store original background colour
         pixelBg = ribbon.querySelector('tbody > tr > td:first-of-type').style.backgroundColor;
+
+        // Update crop factor in ribbon
+        ribbonContainer.querySelector('.cropfactor').innerHTML = form.elements.namedItem('cropfactor').value;
     }
 
     /**
@@ -121,6 +125,9 @@ require('../less/styles.less');
         resetRibbon();
 
         const cropFactor = parseFloat(form.elements.namedItem('cropfactor').value);
+
+        // Update crop factor in ribbon
+        ribbonContainer.querySelector('.cropfactor').innerHTML = cropFactor.toString();
 
         // Walk through all lenses and fill the ribbon
         for (const lens of lenses.querySelectorAll('[id^=lens]')) {
@@ -255,7 +262,7 @@ require('../less/styles.less');
         el.addEventListener('click', function() {
             updateRibbon();
 
-            html2canvas(document.getElementById('ribbon')).then(canvas => {
+            html2canvas(document.getElementById('ribbon-container')).then(canvas => {
                canvas.toBlob((blob) => {
                    fileSaver.saveAs(blob, 'ribbon.' + type);
                }, mime);
