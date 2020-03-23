@@ -1,0 +1,80 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
+#ribbon-container {
+    margin: 80px auto 0 auto;
+}
+
+#ribbon {
+    font-size: 0.65rem;
+    table-layout: fixed;
+    white-space: nowrap;
+    width: 100px;
+
+    tr {
+        height: 2.5em;
+    }
+
+    td, th {
+        width: 3em;
+        overflow: hidden;
+    }
+
+    thead th {
+        text-align: center;
+    }
+
+    tbody {
+        tr {
+            &:first-of-type {
+                th {
+                    background-color: gold;
+                }
+                td {
+                    border-top: none;
+                }
+            }
+
+            &:nth-of-type(2) {
+                th {
+                    background-color: silver;
+                }
+            }
+
+            &:nth-of-type(3) {
+                th {
+                    background-color: #F79646;
+                }
+            }
+
+            &:last-of-type {
+                td {
+                    border-bottom: none;
+                }
+            }
+
+            td {
+                border: 1px solid #AAAAAA;
+                background-color: #28415F;
+
+                &:last-of-type {
+                    border-right: none;
+                }
+            }
+        }
+    }
+}
+
+button.close {
+    color: #FF0000 !important;
+}
+
+#footer {
+    margin-top: 80px;
+    text-align: center;
+}
+
+#forkme {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
