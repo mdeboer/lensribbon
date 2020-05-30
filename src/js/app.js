@@ -55,14 +55,6 @@ require('../less/styles.less');
         600
     ];
 
-    const apertures = {
-        '1.2': '#00B050',
-        '1.8': '#92D050',
-        '2.8': '#FFFF00',
-        '4.0': '#FFC000',
-        '>': '#FF0000'
-    };
-
     /**
      * Create the ribbon based on the focal lengths and apertures.
      */
@@ -157,19 +149,7 @@ require('../less/styles.less');
             lensToIndex = lensToIndex === undefined ? focalLengths.length - 1 : lensToIndex;
 
             // Determine colour based on lens aperture
-            let apertureColour;
-
-            for (const [aperture, colour] of Object.entries(apertures)) {
-                if (aperture === '>') {
-                    apertureColour = colour;
-                    break;
-                }
-
-                if (lensAperture <= parseFloat(aperture)) {
-                    apertureColour = colour;
-                    break;
-                }
-            }
+            const apertureColour = 'hsl('+(Math.min(144, Math.round(190/lensAperture)))+', 100%, 50%)';
 
             // Fill pixels
             for (let x = lensFromIndex; x <= lensToIndex; x++) {
@@ -189,7 +169,6 @@ require('../less/styles.less');
         const lensRow = triggerRow.cloneNode(true);
 
         lensRow.setAttribute('id', 'lens' + rowIndex);
-
 
         // Replace label names
         const rowLabels = lensRow.querySelectorAll('label');
@@ -213,8 +192,31 @@ require('../less/styles.less');
         }
 
         // Update minimum value for 'to'
-        lensRow.querySelector('#from' + rowIndex).addEventListener('change', function() {
-           lensRow.querySelector('#to' + rowIndex).setAttribute('min', this.value);
+        const fromInput = lensRow.querySelector('#from' + rowIndex);
+        const toInput = lensRow.querySelector('#to' + rowIndex);
+        const apertureInput = lensRow.querySelector('#aperture' + rowIndex);
+
+        fromInput.addEventListener('change', function() {
+            toInput.setAttribute('min', this.value);
+        });
+
+        fromInput.addEventListener('keydown', function (e) {
+            if (e.key === '-') {
+                e.stopPropagation();
+                e.preventDefault();
+
+                toInput.value = '';
+                toInput.focus();
+            }
+        });
+
+        apertureInput.addEventListener('keydown', function (e) {
+            if (e.key === ',') {
+                e.stopPropagation();
+                e.preventDefault();
+
+                this.value += '.';
+            }
         });
 
         // Add close button
@@ -269,6 +271,10 @@ require('../less/styles.less');
             });
         });
     });
+
+    function onFocalLengthEntry(e) {
+        console.log(e.target.val());
+    }
 
     // Form submit
     document.getElementById('ribbonForm').addEventListener('submit', updateRibbon);

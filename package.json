@@ -9,5 +9,10 @@
     "less": "^3.11.1",
     "less-loader": "^4.1.0",
     "popper.js": "^1.16.1"
+  },
+  "scripts": {
+    "build": "encore dev",
+    "build:prod": "encore production",
+    "watch": "encore dev --watch"
   }
 }
